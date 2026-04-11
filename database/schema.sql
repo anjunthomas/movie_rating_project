@@ -1,9 +1,9 @@
-drop table moviecountry;
-drop table watchlist;
-drop table ratings;
-drop table country;
-drop table movie;
-drop table user;
+drop table if exists moviecountry;
+drop table if exists watchlist;
+drop table if exists ratings;
+drop table if exists country;
+drop table if exists movie;
+drop table if exists user;
 
 
 create table Movie (
