@@ -24,6 +24,7 @@ create table user (
 	uid integer primary key,
     email varchar(200) not NULL,
     username varchar(200) not NULL,
+    password varchar(200) not NULL,
     constraint uq_user_email unique (email),
     constraint uq_user_username unique (username)
 );
