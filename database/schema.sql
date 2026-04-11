@@ -33,6 +33,7 @@ create table Ratings (
 	mid integer,
     countryID integer,
     rating integer not NULL,
+    constraint uq_ratings_uid_mid unique (uid, mid),
     constraint chk_rating check (rating between 1 and 10),
     foreign key (uid) references User(uid) on delete cascade,
     foreign key (mid) references Movie(mid) on delete cascade
@@ -41,6 +42,7 @@ create table Ratings (
 create table Watchlist (
 	uid integer,
 	mid integer,
+    constraint uq_watchlist_uid_mid unique (uid, mid),
     foreign key (uid) references User(uid) on delete cascade,
     foreign key (mid) references Movie(mid) on delete cascade
 );
