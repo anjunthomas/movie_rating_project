@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { useReactTable, flexRender, getCoreRowModel, createColumnHelper } from "@tanstack/react-table";
-import {User, Earth, Calendar1, BookType } from "lucide-react";
+import { useReactTable, flexRender, getCoreRowModel, createColumnHelper, getSortedRowModel } from "@tanstack/react-table";
+import {User, Earth, Calendar1, BookType, ArrowUpDown } from "lucide-react";
 import { MOVIES } from '../data/mockData'
 
 const columnHelper = createColumnHelper();
@@ -47,12 +47,18 @@ const columns = [
 
 export default function MoviesPage(){
   const [data] = React.useState(() => [...MOVIES]);
+  const [sorting, setSorting] = React.useState([]);
 
   const table = useReactTable({
     data,
     columns,
+    state: {
+      sorting
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-  })
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   console.log(table.getHeaderGroups());
 
@@ -68,13 +74,20 @@ export default function MoviesPage(){
                       key={header.id}
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      <div>
+                      <div
+                        {...{
+                          className: header.column.getCanSort()
+                            ? "cursor-pointer select-none flex items-center"
+                            : "",
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                        <ArrowUpDown className="ml-2" size={14} />
                       </div>
-
                     </th>
                   ))}
                 </tr>
