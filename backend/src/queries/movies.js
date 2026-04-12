@@ -42,5 +42,13 @@ async function getMovie(mid) {
   return movie;
 }
 
+async function countMovies(q){
+  const [[ { count }]] = await db.query(
+    `SELECT COUNT(*) as count FROM movie WHERE LOWER(movie_title) LIKE LOWER(CONCAT('%', ?, '%'))`,
+    [q || ""]
+  );
+  return count;
+}
 
-module.exports = { searchMovies, getMovie };
+
+module.exports = { searchMovies, getMovie, countMovies };

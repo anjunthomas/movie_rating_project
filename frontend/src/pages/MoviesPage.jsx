@@ -2,7 +2,6 @@
 import React from 'react';
 import { useReactTable, flexRender, getCoreRowModel, createColumnHelper, getSortedRowModel, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import {User, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
-import { MOVIES } from '../data/mockData'
 
 const columnHelper = createColumnHelper();
 
@@ -27,7 +26,7 @@ const columns = [
   }),
 
   columnHelper.accessor("release_dt", {
-    cell: (info) => info.getValue(),
+    cell: (info) => info.getValue()?.split('T')[0],
     header: () => (
      <span className="flex items-center">
         <Calendar1 className="mr-2" size={16}/> Release Date
@@ -46,23 +45,41 @@ const columns = [
 ];
 
 export default function MoviesPage(){
-  const [data] = React.useState(() => [...MOVIES]);
+  const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 5 });
+  const [totalRows, setTotalRows] = React.useState(0);
+  const [debouncedFilter, setDebouncedFilter] = React.useState("");
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFilter(globalFilter);
+      setPagination(p => ({ ...p, pageIndex: 0 }));
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [globalFilter]);
+
+
+  React.useEffect(() => {
+  const offset = pagination.pageIndex * pagination.pageSize;
+  fetch(`http://localhost:3000/movies?q=${debouncedFilter}&limit=${pagination.pageSize}&offset=${offset}`)
+    .then((res) => res.json())
+    .then(( { movies, total }) => {
+      setData(movies),
+      setTotalRows(total);
+  });
+}, [pagination, debouncedFilter]);
 
   const table = useReactTable({
     data,
     columns,
-    state: {
-      sorting,
-      globalFilter,
-    },
-    initialState: {
-      pagination: {
-        pageSize: 5,
-      },
-    },
+    state: { sorting, globalFilter, pagination },
+    
     getCoreRowModel: getCoreRowModel(),
+
+    onPaginationChange: setPagination,
+    getPaginationRowModel: getPaginationRowModel(),
     
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -70,7 +87,8 @@ export default function MoviesPage(){
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
 
-    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
+    pageCount: Math.ceil(totalRows / pagination.pageSize),
   });
 
   console.log(table.getHeaderGroups());

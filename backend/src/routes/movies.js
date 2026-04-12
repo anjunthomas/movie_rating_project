@@ -6,8 +6,9 @@ const ratingsQueries = require("../queries/ratings");
 router.get("/", async (req, res, next) => {
   try {
     const { q, limit, offset } = req.query;
-
-    res.json(await moviesQueries.searchMovies(q, limit, offset));
+    const movies = await moviesQueries.searchMovies(q, limit, offset);
+    const total = await moviesQueries.countMovies(q);
+    res.json({ movies, total });
   } catch (e) {
     next(e);
   }
