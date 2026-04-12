@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: moviedb
