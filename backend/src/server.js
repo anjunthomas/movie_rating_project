@@ -10,6 +10,7 @@ app.use('/movies', require('./routes/movies'));
 app.use('/ratings', require('./routes/ratings'));
 app.use('/countries', require('./routes/countries'));
 app.use('/users', require('./routes/users'));
+app.use('/reports', require('./routes/reports'));
 
 app.use(require('./middleware/errorHandler'));
 

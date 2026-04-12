@@ -1,35 +1,15 @@
 import React from 'react';
 import { useReactTable, flexRender, getCoreRowModel, createColumnHelper, getSortedRowModel, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
-import {User, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
-import { RATINGS, USERS, MOVIES } from '../data/mockData'
+import {Star, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
 
 const columnHelper = createColumnHelper();
 
 const columns = [
-  columnHelper.accessor("uid", {
-    cell: (info) => info.getValue(),
-    header: () => (
-      <span className="flex items-center">
-        <User className="mr-2" size={16}/> User ID
-      </span>
-    )
-  }),
-  
-
-  columnHelper.accessor("username", {
-    cell: (info) => info.getValue(),
-    header: () => (
-     <span className="flex items-center">
-        <BookType className="mr-2" size={16}/> Username
-      </span>
-    )
-  }),
-
   columnHelper.accessor("movie_title", {
     cell: (info) => info.getValue(),
     header: () => (
-     <span className="flex items-center">
-        <Calendar1 className="mr-2" size={16}/> Movie Title
+      <span className="flex items-center">
+        <BookType className="mr-2" size={16}/> Movie Title
       </span>
     )
   }),
@@ -38,20 +18,22 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
      <span className="flex items-center">
-        <Earth className="mr-2" size={16}/> Rating
+        <Star className="mr-2" size={16}/> Rating
       </span>
     )
   }),
 ];
 
-export default function RatingsPage(){
-  const data = RATINGS.map((r) => {
-    const user = USERS.find((u) => u.uid === r.uid);
-    const movie = MOVIES.find((m) => m.mid === r.mid);
-    return { uid: r.uid, username: user ? user.username : r.uid, movie_title: movie ? movie.movie_title : r.mid, rating: r.rating + ' / 10' };
-  });
+export default function RatingsPage({ uid }){
+  const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+
+  React.useEffect(() => {
+    fetch(`http://localhost:3000/users/${uid}/ratings`)
+      .then((res) => res.json())
+      .then((ratings) => setData(ratings));
+  }, [uid]);
 
   const table = useReactTable({
     data,
@@ -75,8 +57,6 @@ export default function RatingsPage(){
 
     getPaginationRowModel: getPaginationRowModel(),
   });
-
-  console.log(table.getHeaderGroups());
 
   return ( 
     <div className="flex flex-col min-h-screen max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">

@@ -1,61 +1,49 @@
 import React from 'react';
 import { useReactTable, flexRender, getCoreRowModel, createColumnHelper, getSortedRowModel, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import {User, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
-import { MOVIES, USERS, RATINGS, WATCHLIST } from '../data/mockData'
 
 const columnHelper = createColumnHelper();
 
 const columns = [
-  columnHelper.accessor("uid", {
-    cell: (info) => info.getValue(),
-    header: () => (
-      <span className="flex items-center">
-        <User className="mr-2" size={16}/> User ID
-      </span>
-    )
-  }),
   
-
-  columnHelper.accessor("username", {
-    cell: (info) => info.getValue(),
-    header: () => (
-     <span className="flex items-center">
-        <BookType className="mr-2" size={16}/> Username
-      </span>
-    )
-  }),
-
   columnHelper.accessor("movie_title", {
     cell: (info) => info.getValue(),
     header: () => (
      <span className="flex items-center">
-        <Calendar1 className="mr-2" size={16}/> Movie Title
+        <BookType className="mr-2" size={16}/> Movie Title
       </span>
     )
   }),
 
-  columnHelper.accessor("avg_rating", {
+  columnHelper.accessor("release_dt", {
+    cell: (info) => info.getValue()?.split('T')[0],
+    header: () => (
+     <span className="flex items-center">
+        <Calendar1 className="mr-2" size={16}/> Release Date
+      </span>
+    )
+  }),
+
+  columnHelper.accessor("og_language", {
     cell: (info) => info.getValue(),
     header: () => (
      <span className="flex items-center">
-        <Earth className="mr-2" size={16}/> Average Rating
+        <Earth className="mr-2" size={16}/> Language
       </span>
     )
   }),
 ];
 
-export default function WatchlistPage(){
-const data = WATCHLIST.map((w) => {
-    const user = USERS.find((u) => u.uid === w.uid);
-    const movie = MOVIES.find((m) => m.mid === w.mid);
-    const watchlistRatings = RATINGS.filter((r) => r.mid === w.mid);
-    const avg = watchlistRatings.length
-      ? (watchlistRatings.reduce((sum, r) => sum + r.rating, 0) / watchlistRatings.length).toFixed(1)
-      : '—';
-    return { uid: w.uid, username: user ? user.username : w.uid, movie_title: movie ? movie.movie_title : w.mid, avg_rating: avg };
-  });
+export default function WatchlistPage( { uid }){
+  const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+  
+  React.useEffect(() => {
+  fetch(`http://localhost:3000/users/${uid}/watchlist`)
+    .then((res) => res.json())
+    .then((watchlist) => setData(watchlist));
+  }, [uid]);
 
   const table = useReactTable({
     data,
@@ -79,8 +67,6 @@ const data = WATCHLIST.map((w) => {
 
     getPaginationRowModel: getPaginationRowModel(),
   });
-
-  console.log(table.getHeaderGroups());
 
   return ( 
     <div className="flex flex-col min-h-screen max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">

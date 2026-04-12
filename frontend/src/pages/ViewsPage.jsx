@@ -1,7 +1,6 @@
 import React from 'react';
 import { useReactTable, flexRender, getCoreRowModel, createColumnHelper, getSortedRowModel, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
-import {User, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
-import { USERS, RATINGS } from '../data/mockData'
+import {User, Earth, Hash, Star, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
 
 const columnHelper = createColumnHelper();
 
@@ -20,7 +19,7 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
      <span className="flex items-center">
-        <BookType className="mr-2" size={16}/> Movies Rated
+        <Hash className="mr-2" size={16}/> Movies Rated
       </span>
     )
   }),
@@ -29,22 +28,22 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
      <span className="flex items-center">
-        <Calendar1 className="mr-2" size={16}/> Average Rating
+        <Star className="mr-2" size={16}/> Average Rating
       </span>
     )
   }),
 ];
 
 export default function ViewsPage(){
-  const data = USERS.map((u) => {
-    const userRatings = RATINGS.filter((r) => r.uid === u.uid);
-    const avg = userRatings.length
-      ? (userRatings.reduce((sum, r) => sum + r.rating, 0) / userRatings.length).toFixed(1)
-      : '—';
-    return { username: u.username, num_rated: userRatings.length, avg_rating: avg };
-  });
+  const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+
+  React.useEffect(() => {
+    fetch('http://localhost:3000/reports/users')
+      .then((res) => res.json())
+      .then((users) => setData(users));
+  }, []);
 
   const table = useReactTable({
     data,
