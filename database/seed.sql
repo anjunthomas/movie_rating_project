@@ -19961,3 +19961,120 @@ INSERT IGNORE INTO Movie (mid, movie_title, release_dt, og_language) VALUES (373
 INSERT IGNORE INTO Movie (mid, movie_title, release_dt, og_language) VALUES (11568, 'Blues Brothers 2000', '1998-02-05', 'en');
 INSERT IGNORE INTO Movie (mid, movie_title, release_dt, og_language) VALUES (401561, 'Mom and Dad', '2018-01-19', 'en');
 INSERT IGNORE INTO Movie (mid, movie_title, release_dt, og_language) VALUES (64586, 'Sleeping Beauty', '2011-06-10', 'en');
+
+-- Countries
+INSERT IGNORE INTO country (countryID, country_nm) VALUES
+(1,  'United States'),
+(2,  'Japan'),
+(3,  'South Korea'),
+(4,  'Italy'),
+(5,  'Canada'),
+(6,  'United Kingdom'),
+(7,  'France'),
+(8,  'Spain'),
+(9,  'Germany'),
+(10, 'China'),
+(11, 'Russia'),
+(12, 'India'),
+(13, 'Portugal'),
+(14, 'Sweden'),
+(15, 'Denmark'),
+(16, 'Norway'),
+(17, 'Poland'),
+(18, 'Netherlands'),
+(19, 'Turkey'),
+(20, 'Thailand'),
+(21, 'Hungary'),
+(22, 'Iran'),
+(23, 'Indonesia'),
+(24, 'Finland'),
+(25, 'Serbia'),
+(26, 'Greece'),
+(27, 'Egypt'),
+(28, 'Iceland'),
+(29, 'Czech Republic'),
+(30, 'Ukraine'),
+(31, 'Romania'),
+(32, 'Cambodia'),
+(33, 'Israel'),
+(34, 'Estonia'),
+(35, 'Bosnia and Herzegovina'),
+(36, 'Bangladesh'),
+(37, 'South Africa');
+
+-- Users
+INSERT IGNORE INTO user (uid, email, username, password) VALUES
+(182, 'carrie.bradshaw@gmail.com',  'CarrieBradshaw123', 'password123'),
+(123, 'ItadorYuji@hotmail.com',     'YujiItadori',       'password123'),
+(734, 'snowjon@gmail.com',          'JonSnow',           'winteriscoming'),
+(293, 'gumabllwaterson@icloud.com', 'GumballWaterson',   'password123'),
+(567, 'mordecai&rigby@yahoo.com',   'Mordecai&Rigbi',    'password123');
+
+-- MovieCountry
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid,  1 FROM movie WHERE og_language = 'en';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid,  2 FROM movie WHERE og_language = 'ja';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid,  3 FROM movie WHERE og_language = 'ko';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid,  4 FROM movie WHERE og_language = 'it';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid,  7 FROM movie WHERE og_language = 'fr';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid,  8 FROM movie WHERE og_language IN ('es', 'eu');
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid,  9 FROM movie WHERE og_language = 'de';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 10 FROM movie WHERE og_language IN ('zh', 'cn');
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 11 FROM movie WHERE og_language = 'ru';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 12 FROM movie WHERE og_language IN ('hi', 'te', 'ml');
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 13 FROM movie WHERE og_language = 'pt';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 14 FROM movie WHERE og_language = 'sv';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 15 FROM movie WHERE og_language = 'da';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 16 FROM movie WHERE og_language IN ('no', 'nb');
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 17 FROM movie WHERE og_language = 'pl';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 18 FROM movie WHERE og_language = 'nl';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 19 FROM movie WHERE og_language = 'tr';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 20 FROM movie WHERE og_language = 'th';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 21 FROM movie WHERE og_language = 'hu';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 22 FROM movie WHERE og_language = 'fa';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 23 FROM movie WHERE og_language = 'id';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 24 FROM movie WHERE og_language = 'fi';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 25 FROM movie WHERE og_language IN ('sr', 'sh');
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 26 FROM movie WHERE og_language = 'el';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 27 FROM movie WHERE og_language = 'ar';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 28 FROM movie WHERE og_language = 'is';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 29 FROM movie WHERE og_language = 'cs';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 30 FROM movie WHERE og_language = 'uk';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 31 FROM movie WHERE og_language = 'ro';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 32 FROM movie WHERE og_language = 'km';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 33 FROM movie WHERE og_language = 'he';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 34 FROM movie WHERE og_language = 'et';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 35 FROM movie WHERE og_language = 'bs';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 36 FROM movie WHERE og_language = 'bn';
+INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 37 FROM movie WHERE og_language = 'af';
+
+-- Ratings
+INSERT IGNORE INTO ratings (uid, mid, countryID, rating) VALUES
+(182, 315162, 1, 9),
+(123, 129,    2, 8),
+(123, 155,    2, 10),
+(734, 278,    6, 8),
+(293, 240,    1, 5),
+(293, 315162, 1, 10),
+(182, 240,    1, 4),
+(182, 496243, 1, 8),
+(123, 389,    2, 6),
+(123, 278,    2, 9),
+(734, 155,    6, 10),
+(293, 129,    1, 7),
+(567, 25623,  1, 5),
+(567, 129,    1, 8),
+(567, 155,    1, 10),
+(734, 366564, 6, 7),
+(123, 25623,  2, 6),
+(293, 25623,  1, 10);
+
+-- Watchlist
+INSERT IGNORE INTO watchlist (uid, mid) VALUES
+(734, 122),
+(123, 240),
+(293, 155),
+(182, 447332),
+(567, 240),
+(734, 25623),
+(293, 127380),
+(123, 278);
