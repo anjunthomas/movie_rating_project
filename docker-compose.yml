@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: moviedb
+      MYSQL_USER: movieuser
+      MYSQL_PASSWORD: moviepass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
