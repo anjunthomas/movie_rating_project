@@ -1,36 +1,88 @@
-import '../styles/ResultTable.css';
 
-export default function ResultTable({ columns, headers, data }) {
-  if (!data || data.length === 0) {
-    return <p className="no-results">No results found.</p>;
-  }
+import React from 'react';
+import { useReactTable, flexRender, getCoreRowModel, createColumnHelper } from "@tanstack/react-table";
+import {User, Earth, Calendar1, BookType } from "lucide-react";
+import { MOVIES } from '../data/mockData'
 
-  const displayHeaders = headers || columns.map(formatHeader);
+const columnHelper = createColumnHelper();
 
-  return (
-    <div className="table-container">
-      <table className="result-table">
-        <thead>
-          <tr>
-            {displayHeaders.map((h, i) => (
-              <th key={i}>{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              {columns.map((col) => (
-                <td key={col}>{row[col] ?? '—'}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+const columns = [
+  columnHelper.accessor("mid", {
+    cell: (info) => info.getValue(),
+    header: () => (
+      <span className="flex items-center">
+        <User className="mr-2" size={16}/> MID
+      </span>
+    )
+  }),
+  
+
+  columnHelper.accessor("movie_title", {
+    cell: (info) => info.getValue(),
+    header: () => (
+     <span className="flex items-center">
+        <BookType className="mr-2" size={16}/> Movie Title
+      </span>
+    )
+  }),
+
+  columnHelper.accessor("release_dt", {
+    cell: (info) => info.getValue(),
+    header: () => (
+     <span className="flex items-center">
+        <Calendar1 className="mr-2" size={16}/> Release Date
+      </span>
+    )
+  }),
+
+  columnHelper.accessor("og_language", {
+    cell: (info) => info.getValue(),
+    header: () => (
+     <span className="flex items-center">
+        <Earth className="mr-2" size={16}/> Original Language
+      </span>
+    )
+  }),
+];
+
+export default function ResultTable(){
+  const [data] = React.useState(() => [...MOVIES]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
+  console.log(table.getHeaderGroups());
+
+  return ( <div className="flex flex-col min-h-screen max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className= "overflow-x-auto bg-white shadow-md rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            {
+              table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      <div>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </div>
+
+                    </th>
+                  ))}
+                </tr>
+              ))
+            }
+          </thead>
+        </table>
+      </div>
     </div>
   );
-}
-
-function formatHeader(text) {
-  return text.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
