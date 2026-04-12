@@ -5,46 +5,7 @@ import {User, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, Chev
 
 const columnHelper = createColumnHelper();
 
-const columns = [
-  columnHelper.accessor("mid", {
-    cell: (info) => info.getValue(),
-    header: () => (
-      <span className="flex items-center">
-        <User className="mr-2" size={16}/> MID
-      </span>
-    )
-  }),
-  
-
-  columnHelper.accessor("movie_title", {
-    cell: (info) => info.getValue(),
-    header: () => (
-     <span className="flex items-center">
-        <BookType className="mr-2" size={16}/> Movie Title
-      </span>
-    )
-  }),
-
-  columnHelper.accessor("release_dt", {
-    cell: (info) => info.getValue()?.split('T')[0],
-    header: () => (
-     <span className="flex items-center">
-        <Calendar1 className="mr-2" size={16}/> Release Date
-      </span>
-    )
-  }),
-
-  columnHelper.accessor("og_language", {
-    cell: (info) => info.getValue(),
-    header: () => (
-     <span className="flex items-center">
-        <Earth className="mr-2" size={16}/> Original Language
-      </span>
-    )
-  }),
-];
-
-export default function MoviesPage(){
+export default function MoviesPage( { uid }){
   const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
@@ -71,6 +32,70 @@ export default function MoviesPage(){
   });
 }, [pagination, debouncedFilter]);
 
+    const handleAddToWatchlist = (mid) => {
+      fetch(`http://localhost:3000/users/${uid}/watchlist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mid })
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok) alert('Added to watchlist!');
+        else alert('Already in watchlist or error.');
+      });
+    };
+
+    const columns = [
+    columnHelper.accessor("mid", {
+      cell: (info) => info.getValue(),
+      header: () => (
+        <span className="flex items-center">
+          <User className="mr-2" size={16}/> MID
+        </span>
+      )
+    }),
+  
+    columnHelper.accessor("movie_title", {
+      cell: (info) => info.getValue(),
+      header: () => (
+      <span className="flex items-center">
+          <BookType className="mr-2" size={16}/> Movie Title
+        </span>
+      )
+    }),
+
+    columnHelper.accessor("release_dt", {
+      cell: (info) => info.getValue()?.split('T')[0],
+      header: () => (
+      <span className="flex items-center">
+          <Calendar1 className="mr-2" size={16}/> Release Date
+        </span>
+      )
+    }),
+
+    columnHelper.accessor("og_language", {
+      cell: (info) => info.getValue(),
+      header: () => (
+      <span className="flex items-center">
+          <Earth className="mr-2" size={16}/> Original Language
+        </span>
+      )
+    }),
+
+    columnHelper.display({
+      id: "actions",
+      cell: (info) => (
+        <button
+          onClick={() => handleAddToWatchlist(info.row.original.mid)}
+          className="px-3 py-1 text-xs rounded bg-blue-600 text-white hover:bg-blue-900"
+        >
+          + Watchlist
+        </button>
+      ),
+      header: () => <span>Actions</span>
+    }),
+  ];
+
   const table = useReactTable({
     data,
     columns,
@@ -89,7 +114,7 @@ export default function MoviesPage(){
 
     manualPagination: true,
     pageCount: Math.ceil(totalRows / pagination.pageSize),
-  });
+  }); 
 
   return ( 
     <div className="flex flex-col min-h-screen max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">

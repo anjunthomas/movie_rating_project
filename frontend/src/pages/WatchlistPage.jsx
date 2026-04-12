@@ -4,36 +4,6 @@ import {User, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, Chev
 
 const columnHelper = createColumnHelper();
 
-const columns = [
-  
-  columnHelper.accessor("movie_title", {
-    cell: (info) => info.getValue(),
-    header: () => (
-     <span className="flex items-center">
-        <BookType className="mr-2" size={16}/> Movie Title
-      </span>
-    )
-  }),
-
-  columnHelper.accessor("release_dt", {
-    cell: (info) => info.getValue()?.split('T')[0],
-    header: () => (
-     <span className="flex items-center">
-        <Calendar1 className="mr-2" size={16}/> Release Date
-      </span>
-    )
-  }),
-
-  columnHelper.accessor("og_language", {
-    cell: (info) => info.getValue(),
-    header: () => (
-     <span className="flex items-center">
-        <Earth className="mr-2" size={16}/> Language
-      </span>
-    )
-  }),
-];
-
 export default function WatchlistPage( { uid }){
   const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
@@ -44,6 +14,62 @@ export default function WatchlistPage( { uid }){
     .then((res) => res.json())
     .then((watchlist) => setData(watchlist));
   }, [uid]);
+
+  const handleRemove = (mid) => {
+    fetch(`http://localhost:3000/users/${uid}/watchlist/${mid}`, {
+      method: 'DELETE',
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.ok) {
+        alert('Removed from watchlist!');
+        setData(prev => prev.filter(m => m.mid !== mid));
+      }
+    });
+  };
+
+  const columns = [
+  
+  columnHelper.accessor("movie_title", {
+    cell: (info) => info.getValue(),
+    header: () => (
+      <span className="flex items-center">
+          <BookType className="mr-2" size={16}/> Movie Title
+        </span>
+      )
+    }),
+
+    columnHelper.accessor("release_dt", {
+      cell: (info) => info.getValue()?.split('T')[0],
+      header: () => (
+      <span className="flex items-center">
+          <Calendar1 className="mr-2" size={16}/> Release Date
+        </span>
+      )
+    }),
+
+    columnHelper.accessor("og_language", {
+      cell: (info) => info.getValue(),
+      header: () => (
+      <span className="flex items-center">
+          <Earth className="mr-2" size={16}/> Language
+        </span>
+      )
+    }),
+
+    columnHelper.display({
+      id: "actions",
+      cell: (info) => (
+        <button
+          onClick={() => handleRemove(info.row.original.mid)}
+          className="px-3 py-1 text-xs rounded bg-red-600 text-white hover:bg-red-800"
+        >
+          Remove
+        </button>
+      ),
+      header: () => <span>Actions</span>
+    }),
+  ];
 
   const table = useReactTable({
     data,

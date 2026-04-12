@@ -2,7 +2,7 @@ const db = require("../db");
 
 async function getMovieRatings() {
   const [rows] = await db.query(
-    `SELECT m.movie_title, FLOOR(AVG(r.rating)) AS avg_rating, COUNT(r.uid) AS num_ratings
+    `SELECT m.movie_title, TRUNCATE(AVG(r.rating), 1) AS avg_rating, COUNT(r.uid) AS num_ratings
      FROM movie m, ratings r, moviecountry mc
      WHERE m.mid = r.mid AND m.mid = mc.mid
      GROUP BY m.movie_title`
@@ -22,7 +22,7 @@ async function getUserStats() {
 
 async function getCountryRatings() {
   const [rows] = await db.query(
-    `SELECT c.country_nm, FLOOR(AVG(r.rating)) AS avg_rating
+    `SELECT c.country_nm, TRUNCATE(AVG(r.rating), 1) AS avg_rating
      FROM movie m, ratings r, moviecountry mc, country c
      WHERE m.mid = mc.mid AND mc.mid = r.mid AND c.countryID = mc.countryID
      GROUP BY c.country_nm`
