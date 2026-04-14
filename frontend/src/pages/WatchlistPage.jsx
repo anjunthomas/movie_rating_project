@@ -1,6 +1,6 @@
 import React from 'react';
 import { useReactTable, flexRender, getCoreRowModel, createColumnHelper, getSortedRowModel, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
-import {User, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
+import {Star, Earth, Calendar1, BookType, ArrowUpDown, Search, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react";
 
 const columnHelper = createColumnHelper();
 
@@ -53,6 +53,15 @@ export default function WatchlistPage( { uid }){
       header: () => (
       <span className="flex items-center">
           <Earth className="mr-2" size={16}/> Language
+        </span>
+      )
+    }),
+
+    columnHelper.accessor("avg_rating", {
+      cell: (info) => info.getValue() ? Number(info.getValue()).toFixed(1) : '—',
+      header: () => (
+      <span className="flex items-center">
+          <Star className="mr-2" size={16}/> Avg Rating
         </span>
       )
     }),

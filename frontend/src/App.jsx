@@ -55,7 +55,7 @@ function App() {
 
       <div className="px-6 py-6">
         {page === 'home' && <Home />}
-        {page === 'movies' && <MoviesPage />}
+        {page === 'movies' && <MoviesPage uid={uid}/>}
         {page === 'ratings' && <RatingsPage uid={uid}/>}
         {page === 'watchlist' && <WatchlistPage uid={uid}/>}
         {page === 'reports' && <ReportsPage />}

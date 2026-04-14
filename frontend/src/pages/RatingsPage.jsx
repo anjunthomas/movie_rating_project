@@ -66,7 +66,7 @@ export default function RatingsPage({ uid }) {
             setRatingMidTitle(info.row.original.movie_title);
             setShowModal(true);
           }}
-          className="px-3 py-1 text-xs rounded bg-gray-900 text-white hover:bg-gray-700"
+          className="px-3 py-1 text-xs rounded bg-purple-600 text-white hover:bg-purple-900"
         >
           Edit Rating
         </button>
@@ -99,7 +99,7 @@ export default function RatingsPage({ uid }) {
             <input
               type="number"
               min="1" max="10"
-              value={newRating}f
+              value={newRating}
               onChange={(e) => setNewRating(e.target.value)}
               placeholder="Rating (from 1 to 10)"
               className="border border-gray-300 rounded-md px-3 py-2 text-sm w-full mb-4"

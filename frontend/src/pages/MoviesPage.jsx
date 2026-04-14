@@ -12,6 +12,10 @@ export default function MoviesPage( { uid }){
   const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 5 });
   const [totalRows, setTotalRows] = React.useState(0);
   const [debouncedFilter, setDebouncedFilter] = React.useState("");
+  const [showRatingModal, setShowRatingModal] = React.useState(false);
+  const [ratingMovie, setRatingMovie] = React.useState(null);
+  const [ratingTitle, setRatingTitle] = React.useState('');
+  const [newRating, setNewRating] = React.useState('');
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,6 +48,23 @@ export default function MoviesPage( { uid }){
         else alert('Already in watchlist or error.');
       });
     };
+
+    const handleSubmitRating = () => {
+      if(!newRating) return alert('Please enter a rating.');
+      fetch('http://localhost:3000/ratings', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({uid, mid: ratingMovie, countryID: 1, rating: Number(newRating)})
+      })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.ok){
+          alert('Submitted rating!');
+          setNewRating('');
+          setShowRatingModal(false);
+        }
+      })
+    }
 
     const columns = [
     columnHelper.accessor("mid", {
@@ -94,6 +115,23 @@ export default function MoviesPage( { uid }){
       ),
       header: () => <span>Actions</span>
     }),
+
+    columnHelper.display({
+      id: "rate",
+      cell: (info) => (
+        <button
+          onClick={() => {
+            setRatingMovie(info.row.original.mid)
+            setRatingTitle(info.row.original.movie_title);
+            setShowRatingModal(true);
+          }}
+          className="px-3 py-1 text-xs rounded bg-purple-600 text-white hover:bg-purple-900"
+        >
+          + Rating
+        </button>
+      ),
+      header: () => <span>Rate</span>
+    }),
   ];
 
   const table = useReactTable({
@@ -118,6 +156,36 @@ export default function MoviesPage( { uid }){
 
   return ( 
     <div className="flex flex-col min-h-screen max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      {showRatingModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.5)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', borderRadius: '8px', padding: '24px', width: '320px' }}>
+            <h3 style={{ margin: '0 0 4px', fontSize: '16px', fontWeight: 500 }}>Rate Movie</h3>
+            <p style={{ margin: '0 0 16px', fontSize: '13px', color: '#666666' }}>{ratingTitle}</p>
+            <input
+              type="number"
+              min="1" max="10"
+              value={newRating}
+              onChange={(e) => setNewRating(e.target.value)}
+              placeholder="Rating (from 1 to 10)"
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm w-full mb-4"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleSubmitRating}
+                className="flex-1 px-4 py-2 text-sm rounded bg-gray-900 text-white hover:bg-gray-700"
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => setShowRatingModal(false)}
+                className="flex-1 px-4 py-2 text-sm rounded border border-gray-300 hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mb-4 relative">
         <input
           value={globalFilter ?? ""}
