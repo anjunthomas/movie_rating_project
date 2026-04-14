@@ -3,10 +3,13 @@ const db = require("../db");
 
 async function getWatchlist(uid) {
   const [rows] = await db.query(
-    `SELECT m.mid, m.movie_title, m.release_dt, m.og_language
+    `SELECT m.mid, m.movie_title, m.release_dt, m.og_language,
+            ROUND(AVG(r.rating), 2) AS avg_rating
      FROM watchlist w
      JOIN movie m ON m.mid = w.mid
-     WHERE w.uid = ?`,
+     LEFT JOIN ratings r ON r.mid = m.mid
+     WHERE w.uid = ?
+     GROUP BY m.mid, m.movie_title, m.release_dt, m.og_language`,
     [uid]
   );
 
