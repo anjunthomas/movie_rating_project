@@ -1,0 +1,28 @@
+const router = require("express").Router();
+const reportsQueries = require("../queries/reports");
+
+router.get("/movies", async (req, res, next) => {
+  try {
+    res.json(await reportsQueries.getMovieRatings());
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get("/users", async (req, res, next) => {
+  try {
+    res.json(await reportsQueries.getUserStats());
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get("/countries", async (req, res, next) => {
+  try {
+    res.json(await reportsQueries.getCountryRatings());
+  } catch (e) {
+    next(e);
+  }
+});
+
+module.exports = router;

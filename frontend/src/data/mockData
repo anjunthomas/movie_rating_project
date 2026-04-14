@@ -1,0 +1,50 @@
+export const MOVIES = [
+  { mid: 278, movie_title: 'The Shawshank Redemption', release_dt: '2022-12-22', og_language: 'en' },
+  { mid: 240, movie_title: 'The Godfather Part II', release_dt: '2022-12-21', og_language: 'en' },
+  { mid: 315162, movie_title: 'Puss in Boots: The Last Wish', release_dt: '2022-12-16', og_language: 'en' },
+  { mid: 129, movie_title: 'Spirited Away', release_dt: '2022-11-30', og_language: 'ja' },
+  { mid: 496243, movie_title: 'Parasite', release_dt: '2022-11-25', og_language: 'ko' },
+  { mid: 155, movie_title: 'The Dark Knight', release_dt: '2022-11-24', og_language: 'en' },
+  { mid: 122, movie_title: 'The Lord of the Rings: The Return of the King', release_dt: '1011-11-18', og_language: 'en' },
+  { mid: 324857, movie_title: 'Spider-Man: Into the Spider-Verse', release_dt: '2022-10-19', og_language: 'en' },
+  { mid: 366564, movie_title: "Comment c'est loin", release_dt: '2014-08-07', og_language: 'fr' },
+  { mid: 127380, movie_title: 'Finding Dory', release_dt: '2014-08-06', og_language: 'en' },
+  { mid: 447332, movie_title: 'A Quiet Place', release_dt: '2018-02-02', og_language: 'en' },
+  { mid: 25623, movie_title: 'House', release_dt: '2018-02-09', og_language: 'ja' },
+];
+
+export const USERS = [
+  { uid: 123, username: 'YujiItadori', email: 'ItadorYuji@hotmail.com' },
+  { uid: 734, username: 'JonSnow', email: 'snowjon@gmail.com' },
+  { uid: 293, username: 'TheRealGumballWaterson', email: 'gumabllwaterson@icloud.com' },
+  { uid: 567, username: 'Mordecai&Rigbi', email: 'mordecai&rigby@yahoo.com' },
+];
+
+export const RATINGS = [
+  { uid: 123, mid: 129, rating: 8 },
+  { uid: 123, mid: 155, rating: 10 },
+  { uid: 734, mid: 278, rating: 8 },
+  { uid: 293, mid: 240, rating: 5 },
+  { uid: 293, mid: 315162, rating: 8 },
+  { uid: 182, mid: 496243, rating: 8 },
+  { uid: 123, mid: 278, rating: 9 },
+  { uid: 734, mid: 155, rating: 10 },
+  { uid: 293, mid: 129, rating: 7 },
+  { uid: 567, mid: 25623, rating: 5 },
+  { uid: 567, mid: 129, rating: 8 },
+  { uid: 567, mid: 155, rating: 10 },
+  { uid: 734, mid: 366564, rating: 7 },
+  { uid: 123, mid: 25623, rating: 6 },
+  { uid: 293, mid: 25623, rating: 10 },
+];
+
+export const WATCHLIST = [
+  { uid: 734, mid: 366564 },
+  { uid: 123, mid: 240 },
+  { uid: 293, mid: 155 },
+  { uid: 182, mid: 447332 },
+  { uid: 567, mid: 240 },
+  { uid: 734, mid: 25623 },
+  { uid: 293, mid: 127380 },
+  { uid: 123, mid: 278 },
+];
