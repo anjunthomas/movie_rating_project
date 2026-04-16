@@ -20048,25 +20048,25 @@ INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 36 FROM movie WHERE
 INSERT IGNORE INTO moviecountry (mid, countryID) SELECT mid, 37 FROM movie WHERE og_language = 'af';
 
 -- Ratings
-INSERT IGNORE INTO ratings (uid, mid, countryID, rating) VALUES
-(182, 315162, 1, 9),
-(123, 129,    2, 8),
-(123, 155,    2, 10),
-(734, 278,    6, 8),
-(293, 240,    1, 5),
-(293, 315162, 1, 10),
-(182, 240,    1, 4),
-(182, 496243, 1, 8),
-(123, 389,    2, 6),
-(123, 278,    2, 9),
-(734, 155,    6, 10),
-(293, 129,    1, 7),
-(567, 25623,  1, 5),
-(567, 129,    1, 8),
-(567, 155,    1, 10),
-(734, 366564, 6, 7),
-(123, 25623,  2, 6),
-(293, 25623,  1, 10);
+INSERT IGNORE INTO ratings (uid, mid, rating) VALUES
+(182, 315162, 9),
+(123, 129,    8),
+(123, 155,    10),
+(734, 278,    8),
+(293, 240,    5),
+(293, 315162, 10),
+(182, 240,    4),
+(182, 496243, 8),
+(123, 389,    6),
+(123, 278,    9),
+(734, 155,    10),
+(293, 129,    7),
+(567, 25623,  5),
+(567, 129,    8),
+(567, 155,    10),
+(734, 366564, 7),
+(123, 25623,  6),
+(293, 25623,  10);
 
 -- Watchlist
 INSERT IGNORE INTO watchlist (uid, mid) VALUES

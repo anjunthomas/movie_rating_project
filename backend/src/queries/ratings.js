@@ -2,9 +2,9 @@ const db = require("../db");
 
 async function upsertRating(uid, mid, countryID, rating) {
   await db.query(
-    `INSERT INTO ratings (uid, mid, countryID, rating) VALUES (?, ?, ?, ?)
-     ON DUPLICATE KEY UPDATE countryID = VALUES(countryID), rating = VALUES(rating)`,
-    [uid, mid, countryID, rating]
+    `INSERT INTO ratings (uid, mid, rating) VALUES (?, ?, ?)
+     ON DUPLICATE KEY UPDATE rating = VALUES(rating)`,
+    [uid, mid, rating]
   );
 }
 
@@ -19,13 +19,14 @@ async function getRatingsByMovie(mid) {
   );
 
   const [byCountry] = await db.query(
-    `SELECT c.country_nm, r.countryID,
+    `SELECT mc.countryID, c.country_nm,
             ROUND(AVG(r.rating), 2) AS avg_rating,
             COUNT(*) AS count
      FROM ratings r
-     JOIN country c ON c.countryID = r.countryID
+     LEFT JOIN moviecountry mc ON mc.mid = r.mid
+     LEFT JOIN country c ON c.countryID = mc.countryID
      WHERE r.mid = ?
-     GROUP BY r.countryID, c.country_nm`,
+     GROUP BY mc.countryID, c.country_nm`,
     [mid]
   );
 
@@ -36,9 +37,11 @@ async function getRatingsByUser(uid) {
   const [
     rows
   ] = await db.query(
-    `SELECT r.mid, m.movie_title, r.rating, r.countryID
+    `SELECT r.mid, m.movie_title, r.rating, mc.countryID
      FROM ratings r
      JOIN movie m ON m.mid = r.mid
+     LEFT JOIN moviecountry mc ON mc.mid = r.mid
+     LEFT JOIN country c ON c.countryID = mc.countryID
      WHERE r.uid = ?`,
     [uid]
   );
