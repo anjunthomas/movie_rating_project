@@ -1,6 +1,3 @@
--- Auto-generated seed from TMBD_movies_top_rated.csv
--- 19960 movies
-
 INSERT IGNORE INTO movie (mid, movie_title, release_dt, og_language) VALUES (238, 'The Godfather', '1972-03-14', 'en');
 INSERT IGNORE INTO movie (mid, movie_title, release_dt, og_language) VALUES (278, 'The Shawshank Redemption', '1994-09-23', 'en');
 INSERT IGNORE INTO movie (mid, movie_title, release_dt, og_language) VALUES (240, 'The Godfather Part II', '1974-12-20', 'en');
