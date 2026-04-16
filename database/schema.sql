@@ -19,7 +19,7 @@ create table country (
 );
 
 create table user (
-    uid integer primary key,
+    uid integer primary key AUTO_INCREMENT,
     email varchar(200) not null,
     username varchar(200) not null,
     password varchar(200) not null,
