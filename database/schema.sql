@@ -34,6 +34,7 @@ create table ratings (
     constraint pk_ratings primary key (uid, mid),       
     constraint chk_rating check (rating between 1 and 10),
     foreign key (uid) references user(uid) on delete cascade,
+    foreign key (mid) references movie(mid) on delete cascade
   
 );
 
