@@ -2,16 +2,12 @@ const db = require("../db");
 
 
 async function createUser(email, username, password) {
-  const [[{ next_uid }]] = await db.query(
-    "SELECT COALESCE(MAX(uid), 0) + 1 AS next_uid FROM `user`"
+  const [result] = await db.query(
+    "INSERT INTO `user` (email, username, password) VALUES (?, ?, ?)",
+    [email, username, password]
   );
 
-  await db.query(
-    "INSERT INTO `user` (uid, email, username, password) VALUES (?, ?, ?, ?)",
-    [next_uid, email, username, password]
-  );
-
-  return next_uid;
+  return result.insertId;
 }
 
 
